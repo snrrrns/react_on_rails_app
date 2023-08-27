@@ -1,4 +1,4 @@
-name: Run rubocop
+name: Run Linter
 
 on:
   push:
@@ -19,3 +19,20 @@ jobs:
 
       - name: Run rubocop
         run: bundle exec rubocop
+  eslint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19.9.0' # 開発環境と同じバージョン
+      
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run ESLint
+        run: yarn eslint ./app/javascript
