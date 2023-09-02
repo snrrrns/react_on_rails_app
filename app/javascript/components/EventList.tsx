@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { EventParams, EventListProps } from '../types';
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
@@ -8,14 +8,11 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
 
     return eventArray.map((event) => (
       <li key={event.id} className="hover:bg-orange-100">
-        <Link
-          to={`/events/${event.id}`}
-          className="active:bg-orange-100 block text-black border-b border-gray-300 py-2 px-1"
-        >
+        <NavLink to={`/events/${event.id}`} className="block border-b border-gray-300 py-2 px-1">
           {event.date}
           {' - '}
           {event.type}
-        </Link>
+        </NavLink>
       </li>
     ));
   };
