@@ -31,18 +31,22 @@ const Editor: React.FC = () => {
   return (
     <>
       <Header />
-      {isError && <p>Something went wrong. Check the console.</p>}
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <EventList events={events} />
+      <div className="container mx-auto w-9/10 h-screen mt-8">
+        <div className='flex'>
+          {isError && <p className='p-4'>Something went wrong. Check the console.</p>}
+          {isLoading ? (
+            <p className='p-4'>Loading...</p>
+          ) : (
+            <>
+              <EventList events={events} />
 
-          <Routes>
-            <Route path=":id" element={<Event events={events} />} />
-          </Routes>
-        </>
-      )}
+              <Routes>
+                <Route path=":id" element={<Event events={events} />} />
+              </Routes>
+            </>
+          )}
+        </div>
+      </div>
     </>
   );
 };
