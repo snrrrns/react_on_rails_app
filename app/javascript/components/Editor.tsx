@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { EventParams } from '../types';
 import Header from './Header';
-import EventList, { Event } from './EventList';
+import EventList from './EventList'
+import Event from './Event';
 
 const Editor: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventParams[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -12,7 +15,7 @@ const Editor: React.FC = () => {
       try {
         const response = await window.fetch('/api/events');
         if (!response.ok) throw Error(response.statusText);
-        const data: Event[] = await response.json();
+        const data: EventParams[] = await response.json();
         setEvents(data);
       } catch (error) {
         setIsError(true);
@@ -29,7 +32,17 @@ const Editor: React.FC = () => {
     <>
       <Header />
       {isError && <p>Something went wrong. Check the console.</p>}
-      {isLoading ? <p>Loading...</p> : <EventList events={events} />}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <EventList events={events} />
+
+          <Routes>
+            <Route path=":id" element={<Event events={events} />} />
+          </Routes>
+        </>
+      )}
     </>
   );
 };

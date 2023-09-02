@@ -1,28 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { EventParams, EventListProps } from '../types';
 
-export type Event = {
-  id: number;
-  type: string;
-  date: string;
-  title: string;
-  speaker: string;
-  host: string;
-  published: string;
-};
-
-type EventListProps = {
-  events: Event[];
-};
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
-  const renderEvents = (eventArray: Event[]) => {
+  const renderEvents = (eventArray: EventParams[]) => {
     eventArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return eventArray.map((event) => (
       <li key={event.id}>
-        {event.date}
-        {' - '}
-        {event.type}
+        <Link to={`/events/${event.id}`}>
+          {event.date}
+          {' - '}
+          {event.type}
+        </Link>
       </li>
     ));
   };
