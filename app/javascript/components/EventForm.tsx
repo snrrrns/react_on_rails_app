@@ -10,7 +10,7 @@ const EventForm: React.FC = () => {
     <section>
       <h2 className="font-bold text-xl mb-4">New Event</h2>
       <form onSubmit={handleSubmit} className=" w-2/3 grid gap-2 space-y-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center">
           <label htmlFor="type" className="w-40 block font-bold text-right pr-4">
             Type:
           </label>
