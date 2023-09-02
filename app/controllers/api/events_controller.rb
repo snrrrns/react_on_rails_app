@@ -48,7 +48,7 @@ class Api::EventsController < ApplicationController
       :host,
       :published,
       :created_at,
-      :updated_at,
+      :updated_at
     )
   end
 end
