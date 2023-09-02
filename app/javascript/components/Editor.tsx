@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { EventParams } from '../types';
 import Header from './Header';
-import EventList from './EventList'
+import EventList from './EventList';
 import Event from './Event';
 
 const Editor: React.FC = () => {
@@ -32,10 +32,10 @@ const Editor: React.FC = () => {
     <>
       <Header />
       <div className="container mx-auto w-9/10 h-screen mt-8">
-        <div className='flex'>
-          {isError && <p className='p-4'>Something went wrong. Check the console.</p>}
+        <div className="flex">
+          {isError && <p className="p-4">Something went wrong. Check the console.</p>}
           {isLoading ? (
-            <p className='p-4'>Loading...</p>
+            <p className="p-4">Loading...</p>
           ) : (
             <>
               <EventList events={events} />
@@ -51,4 +51,4 @@ const Editor: React.FC = () => {
   );
 };
 
-export default Editor
+export default Editor;

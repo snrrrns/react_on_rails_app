@@ -6,12 +6,12 @@ const Event: React.FC<EventListProps> = ({ events }) => {
   const { id } = useParams();
   const event = events.find((e) => e.id === Number(id));
 
-  if (!event) return <div className='p-4 mx-4'>Event not found</div>;
+  if (!event) return <div className="p-4 mx-4">Event not found</div>;
 
   return (
     <>
-      <div className='text-sm leading-8 p-4 mx-4'>
-        <h2 className='font-bold text-xl mb-2'>
+      <div className="text-sm leading-8 p-4 mx-4">
+        <h2 className="font-bold text-xl mb-2">
           {event.date}
           {' - '}
           {event.type}
