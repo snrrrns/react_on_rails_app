@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { EventParams, EventListProps } from '../types';
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
@@ -19,7 +19,12 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
 
   return (
     <section className="bg-gray-100 p-4 h-fit">
-      <h2 className="text-xl font-medium pb-2 px-1">Events</h2>
+      <h2 className="text-xl font-medium pb-2 px-1">
+        Events
+        <Link to="/events/new" className="text-blue-600 text-sm float-right font-normal pt-1">
+          New Event
+        </Link>
+      </h2>
       <ul>{renderEvents(events)}</ul>
     </section>
   );

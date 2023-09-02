@@ -4,6 +4,7 @@ import { EventParams } from '../types';
 import Header from './Header';
 import EventList from './EventList';
 import Event from './Event';
+import EventForm from './EventForm';
 
 const Editor: React.FC = () => {
   const [events, setEvents] = useState<EventParams[]>([]);
@@ -39,10 +40,12 @@ const Editor: React.FC = () => {
           ) : (
             <>
               <EventList events={events} />
-
-              <Routes>
-                <Route path=":id" element={<Event events={events} />} />
-              </Routes>
+              <div className="p-4 mx-4 grow">
+                <Routes>
+                  <Route path="new" element={<EventForm />} />
+                  <Route path=":id" element={<Event events={events} />} />
+                </Routes>
+              </div>
             </>
           )}
         </div>

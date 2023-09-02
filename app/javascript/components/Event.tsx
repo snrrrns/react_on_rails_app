@@ -10,7 +10,7 @@ const Event: React.FC<EventListProps> = ({ events }) => {
 
   return (
     <>
-      <div className="text-sm leading-8 p-4 mx-4">
+      <div className="text-sm leading-8">
         <h2 className="font-bold text-xl mb-2">
           {event.date}
           {' - '}
