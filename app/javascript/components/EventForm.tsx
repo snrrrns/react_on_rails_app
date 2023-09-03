@@ -1,16 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Pikaday from 'pikaday';
-import { EventParams, FormErrors } from '../types';
+import {
+  EventParams,
+  FormErrors,
+  EventFormProps,
+  InputChangeEvent,
+  TextAreaChangeEvent,
+  EventKey,
+} from '../types';
 import { isEmptyObject, validateEvent, formatDate } from '../helpers/helper';
-
-type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
-type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
-type EventKey = keyof EventParams;
-type EventFormProps = {
-  events?: EventParams[];
-  onSave: (event: EventParams) => Promise<void>;
-};
 
 const EventForm: React.FC<EventFormProps> = ({ events, onSave }) => {
   const { id } = useParams();
