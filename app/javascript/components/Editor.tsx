@@ -52,6 +52,30 @@ const Editor: React.FC = () => {
     }
   };
 
+  const deleteEvent = async (targetId: number) => {
+    const sure = window.confirm('Are you sure?');
+    if (!sure) return;
+
+    try {
+      const response = await window.fetch(`/api/events/${targetId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw Error(response.statusText);
+
+      window.alert('Event Deleted!');
+      navigate('/events');
+      setEvents(
+        events.filter((event) => {
+          const eventId = event.id!;
+          return eventId !== targetId;
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -66,7 +90,7 @@ const Editor: React.FC = () => {
               <div className="p-4 mx-4 grow">
                 <Routes>
                   <Route path="new" element={<EventForm onSave={addEvent} />} />
-                  <Route path=":id" element={<Event events={events} />} />
+                  <Route path=":id" element={<Event events={events} onDelete={deleteEvent} />} />
                 </Routes>
               </div>
             </>

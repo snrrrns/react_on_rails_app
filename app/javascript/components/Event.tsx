@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { EventListProps } from '../types';
+import { EventProps } from '../types';
 
-const Event: React.FC<EventListProps> = ({ events }) => {
+const Event: React.FC<EventProps> = ({ events, onDelete }) => {
   const { id } = useParams();
   const event = events.find((e) => e.id === Number(id));
 
@@ -15,6 +15,13 @@ const Event: React.FC<EventListProps> = ({ events }) => {
           {event.date}
           {' - '}
           {event.type}
+          <button
+            type="button"
+            onClick={() => onDelete(event.id!)}
+            className="delete bg-transparent border-none p-0 ml-2.5 cursor-pointer text-blue-500 text-sm font-normal hover:underline"
+          >
+            Delete
+          </button>
         </h2>
         <ul>
           <li>
