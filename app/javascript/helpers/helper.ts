@@ -1,6 +1,8 @@
 import { EventParams, FormErrors } from '../types';
 
-export const isEmptyObject = (obj: FormErrors) => Object.keys(obj).length === 0;
+export const isEmptyObject = (obj: Record<string, unknown>) => {
+  return Object.keys(obj).length === 0;
+};
 
 export const validateEvent = (event: EventParams) => {
   const errors: FormErrors = {};
