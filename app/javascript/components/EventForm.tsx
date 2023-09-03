@@ -6,8 +6,11 @@ import { isEmptyObject, validateEvent, formatDate } from '../helpers/helper';
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 type EventKey = keyof EventParams;
+type EventFormProps = {
+  onSave: (event: EventParams) => Promise<void>;
+};
 
-const EventForm: React.FC = () => {
+const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
   const [event, setEvent] = useState<EventParams>({
     type: '',
     date: '',
@@ -63,7 +66,7 @@ const EventForm: React.FC = () => {
     setFormErrors(errors); // エラーがある場合もない場合もformErrorsを更新
 
     if (isEmptyObject(errors)) {
-      console.log(event);
+      onSave(event);
     }
   };
 
