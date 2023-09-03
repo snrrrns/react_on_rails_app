@@ -6,7 +6,7 @@ require:
 AllCops:
   Exclude:
     - "vendor/**/*"
-    - "db/schema.rb"
+    - "db/**/*.rb"
     - "bin/**/*"
     - "lib/**/*"
     - "spec/**/*"
@@ -39,10 +39,9 @@ Metrics/PerceivedComplexity:
 
 Metrics/LineLength:
   Max: 160
-  Exclude:
-    - "db/migrate/*.rb"
 
 Metrics/MethodLength:
   Max: 20
-  Exclude:
-    - "db/migrate/*.rb"
+
+ClassAndModuleChildren:
+  Enabled: false
