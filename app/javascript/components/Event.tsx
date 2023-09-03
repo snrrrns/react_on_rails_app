@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { EventParams } from '../types';
 
 type EventProps = {
@@ -20,6 +20,12 @@ const Event: React.FC<EventProps> = ({ events, onDelete }) => {
           {event.date}
           {' - '}
           {event.type}
+          <Link
+            to={`/events/${event.id!}/edit`}
+            className="delete bg-transparent border-none p-0 ml-2.5 cursor-pointer text-blue-500 text-sm font-normal hover:underline"
+          >
+            Edit
+          </Link>
           <button
             type="button"
             onClick={() => onDelete(event.id!)}

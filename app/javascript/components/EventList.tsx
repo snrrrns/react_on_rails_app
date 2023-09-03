@@ -25,7 +25,10 @@ const EventList: React.FC<EventListProps> = ({ events }) => {
     <section className="bg-gray-100 p-4 h-fit">
       <h2 className="text-xl font-medium pb-2 px-1">
         Events
-        <Link to="/events/new" className="text-blue-600 text-sm float-right font-normal pt-1">
+        <Link
+          to="/events/new"
+          className="text-blue-500 hover:underline text-sm float-right font-normal pt-1"
+        >
           New Event
         </Link>
       </h2>

@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import Pikaday from 'pikaday';
 import { EventParams, FormErrors } from '../types';
 import { isEmptyObject, validateEvent, formatDate } from '../helpers/helper';
@@ -7,18 +8,30 @@ type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 type EventKey = keyof EventParams;
 type EventFormProps = {
+  events?: EventParams[];
   onSave: (event: EventParams) => Promise<void>;
 };
 
-const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
-  const [event, setEvent] = useState<EventParams>({
-    type: '',
-    date: '',
-    title: '',
-    speaker: '',
-    host: '',
-    published: false,
-  });
+const EventForm: React.FC<EventFormProps> = ({ events, onSave }) => {
+  const { id } = useParams();
+
+  const initialEventState = useCallback(() => {
+    const defaults: EventParams = {
+      type: '',
+      date: '',
+      title: '',
+      speaker: '',
+      host: '',
+      published: false,
+    };
+
+    const currentEvent: EventParams | undefined = id
+      ? events!.find((e) => e.id === Number(id))
+      : undefined;
+
+    return { ...defaults, ...currentEvent };
+  }, [events, id]);
+  const [event, setEvent] = useState(initialEventState);
 
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -73,6 +86,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
   useEffect(() => {
     const datepicker = new Pikaday({
       field: dateInput.current,
+      toString: (date) => formatDate(date),
       onSelect: (date) => {
         const formattedDate = formatDate(date);
 
@@ -85,6 +99,10 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
 
     return () => datepicker.destroy();
   }, []);
+
+  useEffect(() => {
+    setEvent(initialEventState);
+  }, [events]);
 
   const updateEvent = (key: EventKey, value: EventParams[EventKey]) => {
     setEvent((prevEvent) => ({ ...prevEvent, [key]: value }));
@@ -105,6 +123,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
             name="type"
             className="w-full px-2 border border-gray-500 rounded"
             onChange={handleInputChange}
+            value={event.type}
           />
         </div>
         <div className="flex justify-between items-center mb-4">
@@ -118,6 +137,8 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
             ref={dateInput}
             autoComplete="off"
             className="w-full px-2 border border-gray-500 rounded"
+            onChange={handleInputChange}
+            value={event.date}
           />
         </div>
         <div className="flex justify-between mb-4">
@@ -131,6 +152,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
             name="title"
             className="w-full px-2 border border-gray-500 rounded"
             onChange={handleTextAreaChange}
+            value={event.title}
           />
         </div>
         <div className="flex justify-between items-center mb-4">
@@ -143,6 +165,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
             name="speaker"
             className="w-full px-2 border border-gray-500 rounded"
             onChange={handleInputChange}
+            value={event.speaker}
           />
         </div>
         <div className="flex justify-between items-center mb-4">
@@ -155,6 +178,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
             name="host"
             className="w-full px-2 border border-gray-500 rounded"
             onChange={handleInputChange}
+            value={event.host}
           />
         </div>
         <div className="flex justify-start items-center mb-4">
@@ -168,6 +192,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSave }) => {
               name="published"
               className="h-4 w-4 rounded"
               onChange={handleInputChange}
+              checked={event.published}
             />
           </div>
         </div>

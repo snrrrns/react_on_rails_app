@@ -53,6 +53,32 @@ const Editor: React.FC = () => {
     }
   };
 
+  const updateEvent = async (updatedEvent: EventParams) => {
+    try {
+      const response = await window.fetch(`/api/events/${updatedEvent.id!}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedEvent),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) throw Error(response.statusText);
+
+      const newEvents = events;
+      const idx = newEvents.findIndex((event) => {
+        return event.id! === updatedEvent.id!;
+      });
+      newEvents[idx] = updatedEvent;
+      setEvents(newEvents);
+      success('Event Updated!');
+      navigate(`/events/${updatedEvent.id!}`);
+    } catch (error) {
+      handleAjaxError(error);
+    }
+  };
+
   const deleteEvent = async (targetId: number) => {
     const sure = window.confirm('Are you sure?');
     if (!sure) return;
@@ -91,6 +117,10 @@ const Editor: React.FC = () => {
                 <Routes>
                   <Route path="new" element={<EventForm onSave={addEvent} />} />
                   <Route path=":id" element={<Event events={events} onDelete={deleteEvent} />} />
+                  <Route
+                    path=":id/edit"
+                    element={<EventForm events={events} onSave={updateEvent} />}
+                  />
                 </Routes>
               </div>
             </>
