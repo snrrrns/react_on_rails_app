@@ -1,6 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { EventProps } from '../types';
+import { EventParams } from '../types';
+
+type EventProps = {
+  events: EventParams[];
+  onDelete: (eventId: number) => Promise<void>;
+};
 
 const Event: React.FC<EventProps> = ({ events, onDelete }) => {
   const { id } = useParams();

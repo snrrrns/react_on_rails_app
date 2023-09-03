@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { EventParams, EventListProps } from '../types';
+import { EventParams } from '../types';
+
+type EventListProps = {
+  events: EventParams[];
+};
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
   const renderEvents = (eventArray: EventParams[]) => {
