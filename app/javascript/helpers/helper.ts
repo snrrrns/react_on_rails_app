@@ -13,3 +13,11 @@ export const validateEvent = (event: EventParams) => {
 
   return errors;
 };
+
+export const formatDate = (date: Date) => {
+  const YYYY = date.getFullYear();
+  const MM = `0${date.getMonth() + 1}`.slice(-2);
+  const DD = `0${date.getDate()}`.slice(-2);
+
+  return `${YYYY}-${MM}-${DD}`;
+};

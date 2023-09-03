@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Pikaday from 'pikaday';
 import { EventParams, FormErrors } from '../types';
-import { isEmptyObject, validateEvent } from '../helpers/helper';
+import { isEmptyObject, validateEvent, formatDate } from '../helpers/helper';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
+type EventKey = keyof EventParams;
 
 const EventForm: React.FC = () => {
   const [event, setEvent] = useState<EventParams>({
@@ -17,19 +19,23 @@ const EventForm: React.FC = () => {
 
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
+  const dateInput = useRef<HTMLInputElement>(null);
+
   const handleInputChange = (e: InputChangeEvent) => {
     const { target } = e;
     const { name, type, checked, value } = target;
+    const eventKeyName = name as EventKey;
     const resultValue = type === 'checkbox' ? checked : value;
 
-    setEvent({ ...event, [name]: resultValue });
+    updateEvent(eventKeyName, resultValue);
   };
 
   const handleTextAreaChange = (e: TextAreaChangeEvent) => {
     const { target } = e;
     const { name, value } = target;
+    const eventKeyName = name as EventKey;
 
-    setEvent({ ...event, [name]: value });
+    updateEvent(eventKeyName, value);
   };
 
   const renderErrors = () => {
@@ -62,6 +68,26 @@ const EventForm: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const datepicker = new Pikaday({
+      field: dateInput.current,
+      onSelect: (date) => {
+        const formattedDate = formatDate(date);
+
+        if (dateInput.current) {
+          dateInput.current.value = formattedDate;
+          updateEvent('date', formattedDate);
+        }
+      },
+    });
+
+    return () => datepicker.destroy();
+  }, []);
+
+  const updateEvent = (key: EventKey, value: EventParams[EventKey]) => {
+    setEvent((prevEvent) => ({ ...prevEvent, [key]: value }));
+  };
+
   return (
     <section>
       {renderErrors()}
@@ -87,8 +113,9 @@ const EventForm: React.FC = () => {
             type="text"
             id="date"
             name="date"
+            ref={dateInput}
+            autoComplete="off"
             className="w-full px-2 border border-gray-500 rounded"
-            onChange={handleInputChange}
           />
         </div>
         <div className="flex justify-between mb-4">
