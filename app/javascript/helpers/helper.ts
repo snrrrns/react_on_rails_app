@@ -28,4 +28,4 @@ export const formatDate = (date: Date) => {
 export const handleAjaxError = (err: unknown) => {
   error('Something went wrong');
   console.error(err);
-}
+};

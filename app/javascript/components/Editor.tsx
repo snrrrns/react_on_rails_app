@@ -46,7 +46,7 @@ const Editor: React.FC = () => {
       const savedEvent: EventParams = await response.json();
       const newEvents = [...events, savedEvent];
       setEvents(newEvents);
-      success('Event Added!')
+      success('Event Added!');
       navigate(`/events/${savedEvent.id}`);
     } catch (error) {
       handleAjaxError(error);
