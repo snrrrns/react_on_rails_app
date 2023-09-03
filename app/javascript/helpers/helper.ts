@@ -1,4 +1,5 @@
 import { EventParams, FormErrors } from '../types';
+import { error } from './notifications';
 
 export const isEmptyObject = (obj: Record<string, unknown>) => {
   return Object.keys(obj).length === 0;
@@ -23,3 +24,8 @@ export const formatDate = (date: Date) => {
 
   return `${YYYY}-${MM}-${DD}`;
 };
+
+export const handleAjaxError = (err: unknown) => {
+  error('Something went wrong');
+  console.error(err);
+}
