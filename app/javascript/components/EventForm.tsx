@@ -60,10 +60,9 @@ const EventForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const errors = validateEvent(event);
+    setFormErrors(errors); // エラーがある場合もない場合もformErrorsを更新
 
-    if (!isEmptyObject(errors)) {
-      setFormErrors(errors);
-    } else {
+    if (isEmptyObject(errors)) {
       console.log(event);
     }
   };
