@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { EventParams, EventListProps } from '../types';
+import { EventRequiredParams, EventListProps } from '../types';
 
 const EventList: React.FC<EventListProps> = ({ events }) => {
-  const renderEvents = (eventArray: EventParams[]) => {
+  const renderEvents = (eventArray: EventRequiredParams[]) => {
     eventArray.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return eventArray.map((event) => (

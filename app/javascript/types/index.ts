@@ -10,6 +10,8 @@ export type EventParams = {
   updated_at?: string;
 };
 
+export type EventRequiredParams = Required<EventParams>;
+
 export type FormErrors = {
   type?: string;
   date?: string;
@@ -19,16 +21,16 @@ export type FormErrors = {
 };
 
 export type EventListProps = {
-  events: EventParams[];
+  events: EventRequiredParams[];
 };
 
 export type EventProps = {
-  events: EventParams[];
+  events: EventRequiredParams[];
   onDelete: (eventId: number) => Promise<void>;
 };
 
 export type EventFormProps = {
-  events?: EventParams[];
+  events?: EventRequiredParams[];
   onSave: (event: EventParams) => Promise<void>;
 };
 

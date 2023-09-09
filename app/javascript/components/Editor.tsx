@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { EventParams } from '../types';
+import { EventParams, EventRequiredParams } from '../types';
 import { handleAjaxError } from '../helpers/helper';
 import { success } from '../helpers/notifications';
 import Header from './Header';
@@ -9,7 +9,7 @@ import Event from './Event';
 import EventForm from './EventForm';
 
 const Editor: React.FC = () => {
-  const [events, setEvents] = useState<EventParams[]>([]);
+  const [events, setEvents] = useState<EventRequiredParams[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const Editor: React.FC = () => {
       try {
         const response = await window.fetch('/api/events');
         if (!response.ok) throw Error(response.statusText);
-        const data: EventParams[] = await response.json();
+        const data: EventRequiredParams[] = await response.json();
         setEvents(data);
       } catch (error) {
         handleAjaxError(error);
@@ -30,11 +30,11 @@ const Editor: React.FC = () => {
     fetchData();
   }, []);
 
-  const addEvent = async (newEvent: EventParams) => {
+  const addEvent = async (addTarget: EventParams) => {
     try {
       const response = await window.fetch('/api/events', {
         method: 'POST',
-        body: JSON.stringify(newEvent),
+        body: JSON.stringify(addTarget),
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const Editor: React.FC = () => {
 
       if (!response.ok) throw Error(response.statusText);
 
-      const savedEvent: EventParams = await response.json();
+      const savedEvent: EventRequiredParams = await response.json();
       const newEvents = [...events, savedEvent];
       setEvents(newEvents);
       success('Event Added!');
@@ -53,11 +53,14 @@ const Editor: React.FC = () => {
     }
   };
 
-  const updateEvent = async (updatedEvent: EventParams) => {
+  const updateEvent = async (updateTarget: EventParams) => {
+    if (!updateTarget.id) throw Error('Event ID is missing.');
+
     try {
-      const response = await window.fetch(`/api/events/${updatedEvent.id!}`, {
+      const { id, created_at, updated_at, ...requestBody } = updateTarget;
+      const response = await window.fetch(`/api/events/${updateTarget.id}`, {
         method: 'PUT',
-        body: JSON.stringify(updatedEvent),
+        body: JSON.stringify(requestBody),
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -66,14 +69,15 @@ const Editor: React.FC = () => {
 
       if (!response.ok) throw Error(response.statusText);
 
-      const newEvents = events;
-      const idx = newEvents.findIndex((event) => {
-        return event.id! === updatedEvent.id!;
+      const updatedEvent: EventRequiredParams = await response.json();
+
+      const idx = events.findIndex((event) => {
+        return event.id === updatedEvent.id;
       });
-      newEvents[idx] = updatedEvent;
-      setEvents(newEvents);
+      events[idx] = updatedEvent;
+      setEvents(events);
       success('Event Updated!');
-      navigate(`/events/${updatedEvent.id!}`);
+      navigate(`/events/${updatedEvent.id}`);
     } catch (error) {
       handleAjaxError(error);
     }

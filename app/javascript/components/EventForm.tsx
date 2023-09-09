@@ -24,16 +24,19 @@ const EventForm: React.FC<EventFormProps> = ({ events, onSave }) => {
       published: false,
     };
 
-    const currentEvent: EventParams | undefined = id
-      ? events!.find((e) => e.id === Number(id))
-      : undefined;
+    if (!events) return defaults;
+
+    const currentEvent: EventParams | undefined = events.find(
+      (event) => id && event.id === Number(id)
+    );
+
+    if (!currentEvent) return defaults;
 
     return { ...defaults, ...currentEvent };
   }, [events, id]);
+
   const [event, setEvent] = useState(initialEventState);
-
   const [formErrors, setFormErrors] = useState<FormErrors>({});
-
   const dateInput = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: InputChangeEvent) => {
